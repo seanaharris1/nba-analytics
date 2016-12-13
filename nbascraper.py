@@ -11,17 +11,6 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from urllib2 import urlopen
 
-#page = requests.get('http://www.basketball-reference.com/teams/MIA/2016/gamelog')
-#tree = html.fromstring(page.content)
-#
-##buyers = tree.xpath('//div[@title="buyer-name"]/text()')
-##prices = tree.xpath('//span[@class="item-price"]/text()')
-#print buyers
-#print prices
-#table = tree.xpath('//*[@id="tgl_basic"]/tbody/tr/text()')
-#print table
-##//*[@id="div_tgl_basic"]
-##//*[@id="tgl_basic"]
 
 url = 'http://www.basketball-reference.com/teams/MIA/2016/gamelog'
 html = urlopen(url)
