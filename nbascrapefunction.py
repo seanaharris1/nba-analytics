@@ -50,7 +50,7 @@ def backtoback(team,date):
             dateconvert = dt.datetime.strptime(date_value,'%Y-%m-%d').date()
             previous_dateconvert = dt.datetime.strp(previous_date_value,'%Y-%m-%d').date()
             
-            """ checking if the diff between the 2 days is 1, if not
+            """ checking if the diff between the 2 dates is 1, if not
             then the date is usable """
             if dateconvert - previous_dateconvert != dt.timedelta(1):
                 usablegameslist.append(date_value)
