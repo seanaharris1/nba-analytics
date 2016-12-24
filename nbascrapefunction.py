@@ -56,7 +56,7 @@ def backtoback(team,date):
                 usablegameslist.append(date_value)
             else:
                 None
-    return usablegamesList
+    return usablegameslist
 
             
 backtoback('HOU','2015-11-01')
