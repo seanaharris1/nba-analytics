@@ -56,6 +56,8 @@ def backtoback(team,date):
                 usablegameslist.append(date_value)
             else:
                 backtobacklist.append(date_value)
+                None
+
     return usablegameslist
 
             
