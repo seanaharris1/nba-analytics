@@ -27,7 +27,7 @@ def backtoback(team,date):
     
     """ creating empty list for the usable games """
     usablegameslist = []
-    
+    backtobacklist = []
     """ forloop to iterate over data_row, find the date value of the game 
     and return it as a string, where x is the index of the datarows """
     for x in range(len(data_row)):
@@ -40,7 +40,7 @@ def backtoback(team,date):
         """ converting the data value as a string, date value happens to be
         in first and only 'a' type child of the datarows """ 
         date_value = str(new_datarow.findAll('a'))
-        previous_date_value = str(new_datarow.findAll('a'))
+        previous_date_value = str(previous_datarow.findAll('a'))
         
         """ checking if given date is equal to the date in the datarow 
         we are currently examing """
@@ -55,11 +55,11 @@ def backtoback(team,date):
             if dateconvert - previous_dateconvert != dt.timedelta(1):
                 usablegameslist.append(date_value)
             else:
-                None
-    return usablegamesList
+                backtobacklist.append(date_value)
+    return usablegameslist
 
             
-backtoback('HOU','2015-11-01')
+usablegameslist = backtoback('HOU','2015-11-01')
 
 
 
