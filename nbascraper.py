@@ -1,16 +1,14 @@
- # -*- coding: utf-8 -*-
-"""
-Created on Thu Dec 08 15:22:36 2016
-
-@author: SHarris
-"""
-
-
-import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from urllib2 import urlopen
+#import nbascrapefunction.py 
 
+#url = 'http://www.basketball-reference.com/teams/MIA/2016/gamelog'
+#print url
+#html = urlopen(url)
+#soup = BeautifulSoup(html,'html.parser')
+#table = soup.findAll('tbody')[0].findAll('a')
+#letters = soup.findAll("div", class_="right endpoint tooltip")
 
 def pullgamelog(team):
     """ pulling gamelog data from basketball-reference using BeautifulSoup """
@@ -36,7 +34,7 @@ def pullgamelog(team):
     column_headershome[2] = 'home/away'
     column_headershome[6] = 'opponent points'
     
-    """ combining home and away columns """
+    """ combining home and away columns """ 
     column_headers_complete = column_headershome + column_headersopp
     
     """ pulling data from gamelog table """
@@ -53,7 +51,7 @@ def pullgamelog(team):
     remove_indexes = [20,21,42,43,64,65,86,87]
     for x in sorted(remove_indexes,reverse = True):
         del game_data[x]
-    #print column_headers
+#    print column_headers
 
     """ creating the dataframe """
     df = pd.DataFrame(game_data, columns = column_headers_complete)
@@ -62,16 +60,28 @@ def pullgamelog(team):
     df2 = df.loc[df['home/away'] == '']
     
     """ creating dataframe of only date and opponent team name """
-    df3 = df2.loc[:,['Date','Opp']]
+    df3 = df2.loc[:,["Date","Opp"]]
     
-    """creating list of dates and list of teams to pass to backtoback function """
+    """creating list of dates and list of teams to pass to backtoback function
+    and writing lists to text file"""
     dateslist = df3['Date'].tolist()
+    dateslist = '\n'.join(str(p) for p in dateslist)
+    dateslistfile = open("dates_list_text.txt","w")
+    dateslistfile.write(dateslist)
+    dateslistfile.close()
+    
     teamslist = df3['Opp'].tolist()
-    return dateslist,teamslist,df2
+    teamslist = '\n'.join(str(p) for p in teamslist)
+    teamslistfile = open("teams_list_text.txt","w")
+    teamslistfile.write(teamslist)
+    teamslistfile.close()
+    
+    usablegameslist = ['2015-11-01','2015-12-05']
+    df4 = df3[df3['Date'].isin(usablegameslist)]
+    return dateslist,teamslist,df2,df3,df4
 
-dateslist,teamslist,df2 = pullgamelog('MIA')
+            
+        
+dateslist,teamslist,df2,df3,df4 = pullgamelog('MIA')
 
-    
-    
-    
-    
+df2.to_pickle("C:\Users\sharris\Documents\Python Scripts\gamedf.pkl")
