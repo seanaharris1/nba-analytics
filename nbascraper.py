@@ -76,12 +76,11 @@ def pullgamelog(team):
     teamslistfile.write(teamslist)
     teamslistfile.close()
     
-    usablegameslist = ['2015-11-01','2015-12-05']
-    df4 = df3[df3['Date'].isin(usablegameslist)]
-    return dateslist,teamslist,df2,df3,df4
+
+    return dateslist,teamslist,df2,df3
 
             
         
-dateslist,teamslist,df2,df3,df4 = pullgamelog('MIA')
+dateslist,teamslist,df2,df3 = pullgamelog('MIA')
 
 df2.to_pickle("C:\Users\sharris\Documents\Python Scripts\gamedf.pkl")
