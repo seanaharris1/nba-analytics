@@ -10,4 +10,5 @@ The first script I am writing will investigate (and hopefully validate) the myth
 I will be compare statistics like team PPG, team turnovers, team PPG allowed to the team's average and try to identify a trend. I will also perform the same analysis on teams in other major cities such as the New York Knicks, Brooklyn Nets, LA Clippers, and LA Lakers.
 
 
-![Alt text](https://github.com/seanaharris1/nbascraper/blob/master/MIami%20Home%20Games%20Fouls.png?raw=true)
+# NBA Scraper
+I wrote a function that uses the BeautifulSoup and Pandas libraries to pull the gamelogs of a team (in this case, the Miami Heat) and fit them to a dataframe. 
