@@ -19,7 +19,10 @@ The nbascraper.py file uses the BeautifulSoup and Pandas libraries to pull the g
 ```
 *Note: The season to be pulled can be easily changed by editing the variable 'url' to the year that is desired.*
 
-Pulling out the gamelog with BeautifulSoup requires some inspecting of the gamelog webpage. If you are using Google Chrome, Ctrl+Shift+I or F12 will open the developer's tab. The developer's tab is a useful tool when doing any web scraping with BeautifulSoup
+Pulling out the gamelog with BeautifulSoup requires some inspecting of the gamelog webpage. If you are using Google Chrome, Ctrl+Shift+I or F12 will open the developer's tab. The developer's tab is a useful tool when doing any web scraping with BeautifulSoup. It will highlight the webpage element as you hover over it.
+
+[basketball-reference gamelog table](https://user-images.githubusercontent.com/24396902/29322699-6106e726-81ac-11e7-800b-82bf0f1c67ff.png)
+
 
 I remove the blank columns and rename the columns of the opponent's statistics to avoid duplicate column names. I make a complete dataframe (variable name 'df') of the entire game log minus the empty rows. I then make two seperate dataframes from the gamelog dataframe: one for only Miami home games (df2) and another with only the date and opposing team (df3). 
 
