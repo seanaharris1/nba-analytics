@@ -7,11 +7,11 @@ I will be using pandas, BeautifulSoup, numpy, and matplotlib libraries to pull a
 ## South Beach Flu
 The first script I am writing will investigate (and hopefully validate) the myth of the "South Beach Flu", wherein opposing NBA teams, when visiting Miami (if they did not play the night before) will perform worse because they enjoyed a night on South Beach the night before (hence the name "South Beach Flu"). 
 
-I will be comparing statistics like team PPG, team turnovers, team PPG allowed to the team's average and try to identify a trend. I will also perform the same analysis on teams in other major cities such as the New York Knicks, Brooklyn Nets, LA Clippers, and LA Lakers.
+I will be comparing various statistics to try and verify a trend. I will also perform the same analysis on teams in other major cities like the New York Knicks, Brooklyn Nets, LA Clippers, and LA Lakers.
 
 
-### NBA Scraper
-The nbascraper.py file uses the BeautifulSoup and Pandas libraries to pull the gamelogs of a team (in this case, the Miami Heat) and fit them to a dataframe. It takes the 3 digit abbeviation of any NBA team and pulls the game log for the 2015-2016 season. 
+### Pull Game Log
+The pullgamelog.py file uses the BeautifulSoup and Pandas libraries to pull the gamelogs of a team (in this case, the Miami Heat) and fit them to a dataframe. It takes the 3 digit abbeviation of any NBA team and pulls the game log for the 2015-2016 season. 
 ```python
     url = 'http://www.basketball-reference.com/teams/'+team+'/2016/gamelog'
     html = urlopen(url)
