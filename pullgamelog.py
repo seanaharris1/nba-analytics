@@ -1,19 +1,16 @@
+"""
+Created on Thu Dec 08 15:22:36 2016
+
+@author: SHarris
+"""
+
+
 from bs4 import BeautifulSoup
 import pandas as pd
 from urllib2 import urlopen
-#import nbascrapefunction.py 
-
-#url = 'http://www.basketball-reference.com/teams/MIA/2016/gamelog'
-#print url
-#html = urlopen(url)
-#soup = BeautifulSoup(html,'html.parser')
-#table = soup.findAll('tbody')[0].findAll('a')
-#letters = soup.findAll("div", class_="right endpoint tooltip")
-
 def pullgamelog(team):
     """ pulling gamelog data from basketball-reference using BeautifulSoup """
     url = 'http://www.basketball-reference.com/teams/'+team+'/2016/gamelog'
-    print url
     html = urlopen(url)
     soup = BeautifulSoup(html,'html.parser')
     
@@ -51,7 +48,6 @@ def pullgamelog(team):
     remove_indexes = [20,21,42,43,64,65,86,87]
     for x in sorted(remove_indexes,reverse = True):
         del game_data[x]
-#    print column_headers
 
     """ creating the dataframe """
     df = pd.DataFrame(game_data, columns = column_headers_complete)
@@ -76,23 +72,6 @@ def pullgamelog(team):
     teamslistfile.write(teamslist)
     teamslistfile.close()
     
-<<<<<<< HEAD:nbascraper.py
-    usablegameslist = ['2015-11-01','2015-12-05']
-    df4 = df3[df3['Date'].isin(usablegameslist)]
-    return dateslist,teamslist,df2,df3,df4
-
-            
-        
-dateslist,teamslist,df2,df3,df4 = pullgamelog('MIA')
-
-df2.to_pickle("C:\Users\sharris\Documents\Python Scripts\gamedf.pkl")
-
-
-    
-    
-    
-=======
-
     return dateslist,teamslist,df2,df3
 
             
@@ -100,4 +79,8 @@ df2.to_pickle("C:\Users\sharris\Documents\Python Scripts\gamedf.pkl")
 dateslist,teamslist,df2,df3 = pullgamelog('MIA')
 
 df2.to_pickle("C:\Users\sharris\Documents\Python Scripts\gamedf.pkl")
->>>>>>> eddf6b0b1dd7f96159a95ba6d7e01cca6c89c06c:pullgamelog.py
+
+
+    
+    
+    
