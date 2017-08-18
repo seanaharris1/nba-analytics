@@ -13,6 +13,7 @@ gamelogdf = pd.read_pickle("C:\Users\sharris\Documents\Python Scripts\gamedf.pkl
 files to the lists """
 usablegameslist = []
 backtobacklist = []
+avgpointslist = [] 
 
 with open("usable_games_file.txt","r") as usablegames:
     for game in csv.reader(usablegames):
@@ -24,6 +25,14 @@ with open("back_to_back.txt","r") as backtoback:
         backtobacklist.append(game)
 backtobacklist = [''.join(x) for x in backtobacklist]
 
+with open("avgpointslist.txt","r") as avgpoints:
+    for game in csv.reader(avgpoints):
+        avgpointslist.append(game)
+avgpointslist = [''.join(x) for x in avgpointslist]
+
+gamelogdf['avg_road_points'] = pd.Series(avgpointslist, index=gamelogdf.index)
+gamelogdf = gamelogdf.apply(pd.to_numeric, errors='ignore')
+roadpointsmean = gamelogdf['avg_road_points'].mean()
 #%% Home team Dataframes
 """ hometeam_usabledf is the dataframe of the home team stats when facing a team
 that has not played the night before (not on the 2nd night of back to back). 
@@ -113,9 +122,9 @@ rects2 = plt.bar(index + bar_width, means_2, bar_width,
 
 plt.ylabel('Shooting Percentage',fontname = 'Arial', fontsize=14)
 plt.title('Miami Home Games', fontname = 'Arial', fontsize=20)
-plt.xticks(index + bar_width, ('Away team FG %','Home team FG%',
-                               'Away team 3P %', 'Home team 3P %'),
-                               fontsize = 11)
+plt.xticks(index + bar_width, ('Away team FG%','Home team FG%',
+                               'Away team 3P%', 'Home team 3P%'),
+                               fontsize = 10)
                                
 """ setting location of the legend because it was interfering with the bars,
 changing fontsize, adding a box around it with frameon=True """
@@ -167,6 +176,46 @@ leg.get_frame().set_edgecolor('k')
 plt.grid(False)
 plt.tight_layout()
 plt.show()
+
+""" bar graph for fouls per game """
+n_groups = 2
+foulsmeanbtb = (awayteampfavgbtb,hometeampfavgbtb)
+foulsmeanuse = (awayteampfavguse,hometeampfavguse)
+fig, ac = plt.subplots()
+
+index = np.arange(n_groups)
+
+bar_width = 0.30
+opacity = 0.6
+
+bar_1 = plt.bar(index, foulsmeanbtb, bar_width,
+                alpha = opacity,
+                color = 'b',
+                label = 'back-to-back games')
+                
+bar_2 = plt.bar(index + bar_width, foulsmeanuse, bar_width,
+                alpha = opacity,
+                color = 'g',
+                label = 'non back-to-back games')
+                
+plt.ylabel('Fouls Per Games', fontname = 'Arial', fontsize = 14)
+
+plt.title('Miami Home Games', fontname = 'Arial',
+          fontsize = 20,
+          loc = 'center')
+          
+plt.xticks(index + bar_width, ('Away team fouls/game',
+                               'Home team fouls/game'),
+                               fontsize = 13,
+                               fontname = 'Arial')
+                               
+leg = plt.legend(bbox_to_anchor=(1,0.9), loc='center left', ncol=1,
+                 fontsize = 14, frameon=True)
+leg.get_frame().set_edgecolor('k')
+plt.grid(False)
+plt.tight_layout()
+plt.show()
+
 
 
 

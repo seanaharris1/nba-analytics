@@ -1,12 +1,3 @@
- # -*- coding: utf-8 -*-
-"""
-Created on Thu Dec 08 15:22:36 2016
-
-@author: SHarris
-"""
-
-
-import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from urllib2 import urlopen
@@ -85,6 +76,7 @@ def pullgamelog(team):
     teamslistfile.write(teamslist)
     teamslistfile.close()
     
+<<<<<<< HEAD:nbascraper.py
     usablegameslist = ['2015-11-01','2015-12-05']
     df4 = df3[df3['Date'].isin(usablegameslist)]
     return dateslist,teamslist,df2,df3,df4
@@ -99,3 +91,13 @@ df2.to_pickle("C:\Users\sharris\Documents\Python Scripts\gamedf.pkl")
     
     
     
+=======
+
+    return dateslist,teamslist,df2,df3
+
+            
+        
+dateslist,teamslist,df2,df3 = pullgamelog('MIA')
+
+df2.to_pickle("C:\Users\sharris\Documents\Python Scripts\gamedf.pkl")
+>>>>>>> eddf6b0b1dd7f96159a95ba6d7e01cca6c89c06c:pullgamelog.py

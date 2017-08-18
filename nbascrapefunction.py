@@ -75,6 +75,7 @@ def backtoback(*pair):
             #print new_date
             previous_date = opp_dates_list[x-1]
             #print previous_date
+<<<<<<< HEAD
             
             """ converting elements from data_rows to string types """
             #date_value = str(new_datarow.findAll('a'))[39:49]
@@ -83,6 +84,16 @@ def backtoback(*pair):
             
     #        previous_date_value = str(previous_datarow.findAll('td')[1])[40:50]
             
+=======
+            
+            """ converting elements from data_rows to string types """
+            #date_value = str(new_datarow.findAll('a'))[39:49]
+            #date_value = new_datarow
+            #previous_date_value = previous_datarow[39:49]
+            
+    #        previous_date_value = str(previous_datarow.findAll('td')[1])[40:50]
+            
+>>>>>>> eddf6b0b1dd7f96159a95ba6d7e01cca6c89c06c
             """ checking if given date is equal to the date in the datarow 
             we are currently examing """
             if date in new_date:
@@ -115,6 +126,7 @@ def backtoback(*pair):
 """ creating empty lists """
 dates_list = []
 teams_list = []
+<<<<<<< HEAD
 
 """ calling the text files created in nbascraper file """
 with open("dates_list_text.txt","r") as dateslist:
@@ -143,4 +155,33 @@ backtobacklist = "\n".join(p for p in backtobacklist)
 backtobackfile = open("back_to_back.txt","w")
 backtobackfile.write(backtobacklist)
 backtobackfile.close()
+=======
 
+""" calling the text files created in nbascraper file """
+with open("dates_list_text.txt","r") as dateslist:
+    for date in csv.reader(dateslist):
+        dates_list.append(date)
+dates_list = [''.join(x) for x in dates_list]
+
+with open("teams_list_text.txt","r") as teamslist:
+    for team in csv.reader(teamslist):
+        teams_list.append(team)
+teams_list = [''.join(x) for x in teams_list]
+
+""" zipping the 2 lists so it can be passed to the backtoback function """
+pair = zip(teams_list,dates_list)
+
+#backtoback(*pair)
+usablegameslist,backtobacklist,new,previous = backtoback(*pair)
+
+""" writing usablegameslist and backtobacklist to text files """
+usablegameslist = "\n".join(p for p in usablegameslist)
+usablegamesfile = open("usable_games_file.txt","w")
+usablegamesfile.write(usablegameslist)
+usablegamesfile.close()
+>>>>>>> eddf6b0b1dd7f96159a95ba6d7e01cca6c89c06c
+
+backtobacklist = "\n".join(p for p in backtobacklist)
+backtobackfile = open("back_to_back.txt","w")
+backtobackfile.write(backtobacklist)
+backtobackfile.close()
