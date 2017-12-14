@@ -5,6 +5,7 @@ import numpy as np
 import sympy as sp
 from matplotlib.font_manager import FontProperties
 import seaborn as sns
+import pickle
 
 """ opening pickle of dataframe from nbascraper file """
 gamelogdf = pd.read_pickle("C:\Users\sharris\Documents\Python Scripts\gamedf.pkl")
@@ -14,6 +15,8 @@ files to the lists """
 usablegameslist = []
 backtobacklist = []
 avgpointslist = [] 
+
+
 
 with open("usable_games_file.txt","r") as usablegames:
     for game in csv.reader(usablegames):
@@ -30,9 +33,18 @@ with open("avgpointslist.txt","r") as avgpoints:
         avgpointslist.append(game)
 avgpointslist = [''.join(x) for x in avgpointslist]
 
+""" loading home and away points per game, and teamname pickle """
+with open("pointslist.txt","rb") as pl:
+    avgppg = pickle.load(pl)
+avghomepoints = float(avgppg[0])
+avgawaypoints = float(avgppg[1])
+teamname = avgppg[2]
+
+""" adding the avg points on the road for each team in the gamelog df """
 gamelogdf['avg_road_points'] = pd.Series(avgpointslist, index=gamelogdf.index)
 gamelogdf = gamelogdf.apply(pd.to_numeric, errors='ignore')
 roadpointsmean = gamelogdf['avg_road_points'].mean()
+
 #%% Home team Dataframes
 """ hometeam_usabledf is the dataframe of the home team stats when facing a team
 that has not played the night before (not on the 2nd night of back to back). 
@@ -63,11 +75,12 @@ hometeamtovavgbtb = hometeam_backtobackdf['TOV'].mean()
 hometeamtovavguse = hometeam_usabledf['TOV'].mean()
 hometeampfavgbtb = hometeam_backtobackdf['PF'].mean()
 hometeampfavguse = hometeam_usabledf['PF'].mean()
-
+hometeamptavgbtb = hometeam_backtobackdf['Tm'].mean()
+hometeamptavguse = hometeam_usabledf['Tm'].mean()
 #%% Away Team Dataframes
 """ Away Team """
-awayteam_usabledf = gamelogdf.loc[:,["Date","FGopp","FG%opp","3P%opp","FT%opp","ORBopp",
-                                   "TRBopp","TOVopp","PFopp"]]
+awayteam_usabledf = gamelogdf.loc[:,["Date","opponent points","FGopp","FG%opp",
+"3P%opp","FT%opp","ORBopp","TRBopp","TOVopp","PFopp"]]
 awayteam_usabledf =gamelogdf[gamelogdf['Date'].isin(usablegameslist)]
 
 """ resetting the index """
@@ -76,8 +89,8 @@ awayteam_usabledf = awayteam_usabledf.reset_index(drop=True)
 """ converting columns with number stats to float type """
 awayteam_usabledf = awayteam_usabledf.apply(pd.to_numeric, errors ='ignore')
 
-awayteam_backtobackdf = gamelogdf.loc[:,["Date","FGopp","FG%opp","3P%opp","FT%opp","ORBopp",
-                                   "TRBopp","TOVopp","PFopp"]]
+awayteam_backtobackdf = gamelogdf.loc[:,["Date","opponent points","FGopp",
+"FG%opp","3P%opp","FT%opp","ORBopp","TRBopp","TOVopp","PFopp"]]
 awayteam_backtobackdf = awayteam_backtobackdf[awayteam_backtobackdf['Date'].isin(backtobacklist)]
 awayteam_backtobackdf = awayteam_backtobackdf.reset_index(drop=True)
 awayteam_backtobackdf = awayteam_backtobackdf.apply(pd.to_numeric, errors='ignore')
@@ -91,6 +104,8 @@ awayteamtovavgbtb = awayteam_backtobackdf['TOVopp'].mean()
 awayteamtovavguse = awayteam_usabledf['TOVopp'].mean()
 awayteampfavgbtb = awayteam_backtobackdf['PFopp'].mean()
 awayteampfavguse = awayteam_usabledf['PFopp'].mean()
+awayteamptavgbtb = awayteam_backtobackdf['opponent points'].mean()
+awayteampfavguse = awayteam_usabledf['opponent points'].mean()
 
 #%% Creating Graphs
 
@@ -105,7 +120,7 @@ means_2 = tuple(100*x for x in means_2)
 fig, ac = plt.subplots()
 index = np.arange(n_groups)
 
-""" creating graph """
+""" creating graph for avg FG% and 3P%  """
 bar_width = 0.35
 opacity = 0.6
 
@@ -121,7 +136,7 @@ rects2 = plt.bar(index + bar_width, means_2, bar_width,
 
 
 plt.ylabel('Shooting Percentage',fontname = 'Arial', fontsize=14)
-plt.title('Miami Home Games', fontname = 'Arial', fontsize=20)
+plt.title(teamname + ' Home Games', fontname = 'Arial', fontsize=20)
 plt.xticks(index + bar_width, ('Away team FG%','Home team FG%',
                                'Away team 3P%', 'Home team 3P%'),
                                fontsize = 10)
@@ -163,7 +178,7 @@ bar2 = plt.bar(index + bar_width, tovmeanuse, bar_width,
 
 plt.ylabel('Turnovers Per Game', fontname = 'Arial', fontsize = 14)
 
-plt.title('Miami Home Games', fontname = 'Arial',
+plt.title(teamname + ' Home Games', fontname = 'Arial',
           fontsize = '20',
           loc='center')
 plt.xticks(index + bar_width, ('Away team turnovers/game',
@@ -200,7 +215,7 @@ bar_2 = plt.bar(index + bar_width, foulsmeanuse, bar_width,
                 
 plt.ylabel('Fouls Per Games', fontname = 'Arial', fontsize = 14)
 
-plt.title('Miami Home Games', fontname = 'Arial',
+plt.title(teamname + ' Home Games', fontname = 'Arial',
           fontsize = 20,
           loc = 'center')
           
@@ -216,16 +231,6 @@ plt.grid(False)
 plt.tight_layout()
 plt.show()
 
-
-
-
-
-
-
-
-
-
-
-
+""" bar graph for points scored vs avg points per game """
 
 
