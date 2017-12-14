@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import datetime as dt
 from urllib2 import urlopen
 import csv
+import pickle
 
 """ 
 NOTES 
@@ -13,6 +14,10 @@ include 'a' type elements, which contain the date of each game in the gamelog.
 - SAH 07/12/2017 
 
 """
+""" loading pickle that contains team and season that was passed to gamelog 
+file so we can pass it to the url variable in the teamdate function """
+with open("season.txt","rb") as seas:
+    season = pickle.load(seas)
 
 def backtoback(*pair):
     list(teams_list)
@@ -28,7 +33,7 @@ def backtoback(*pair):
     for team,date in teamdate:
         print team
         """ feed 'team' value from function input """
-        url = 'http://www.basketball-reference.com/teams/'+team+'/2016/gamelog'
+        url = 'http://www.basketball-reference.com/teams/'+team+'/'+season+'/gamelog'
         html = urlopen(url)
         soup = BeautifulSoup(html,"html.parser")
         

@@ -117,7 +117,12 @@ def pullgamelog(team,season):
     """ saving points per game list to pickle """
     with open("pointslist.txt","wb") as pl:
         pickle.dump(avgpointslist,pl)
-        
+    
+    """ saving season inputted by user to pickle """
+    with open("season.txt","wb") as seas:
+        pickle.dump(season,seas)
+    
+    
     return dateslist,teamslist,df2,df3,avgpointslist,ppgstring
 
             
