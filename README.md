@@ -2,12 +2,22 @@
 Data scraping and analysis on NBA teams via data from [basketball-reference.com](https://www.basketball-reference.com/). 
 
 # Introduction
+This project will investigate (and hopefully validate) the myth of the "South Beach Flu", wherein opposing NBA teams, when visiting Miami (if they did not play the night before) will perform worse because they enjoyed a night on South Beach the night before (hence the name "South Beach Flu"). 
+
 I will be using pandas, BeautifulSoup, numpy, and matplotlib libraries to pull and analyze statistics of NBA teams and players using data from the basketball-reference.com. I will be adding several different scripts doing different types of data analytics and will be glad to take any suggestions on what kind of analysis to perform.
 
-## South Beach Flu
-The first script I am writing will investigate (and hopefully validate) the myth of the "South Beach Flu", wherein opposing NBA teams, when visiting Miami (if they did not play the night before) will perform worse because they enjoyed a night on South Beach the night before (hence the name "South Beach Flu"). 
-
-I will be comparing various statistics to try and verify a trend. I will also perform the same analysis on teams in other major cities like the New York Knicks, Brooklyn Nets, LA Clippers, and LA Lakers.
+### Required Libraries
+```python
+from bs4 import BeautifulSoup
+import pandas as pd
+import csv
+import matplotlib.pyplot as plt
+import datetime as dt
+from urllib2 import urlopen
+import numpy as np
+import pickle
+```
+The code in this depository is written in Python 2.7 but all of the required libraries will work with Python 3 as well. If you are using an IDE like Anaconda, you will have most of the required libraries except for Beautiful Soup 4. Beautiful Soup 4 can be install with ``` pip install bs4 ```
 
 
 ### Pull Game Log
@@ -144,4 +154,24 @@ I will create lists from the *Date* and *Opp* columns from df3 (*again, we could
     teamslistfile = open("teams_list_text.txt","w")
     teamslistfile.write(teamslist)
     teamslistfile.close()
+```
+Save the points per game list and season variable to pickles to be opened up in the nbascrapefunction and return the dateslist, teamslist, df2, df3, avgpointslist, and ppgstring just so I can make sure the function is returning the correct values. df2 is saved to a pickle to be passed to the nbadatavis file.
+
+```python 
+    """ saving points per game list to pickle """
+    with open("pointslist.txt","wb") as pl:
+        pickle.dump(avgpointslist,pl)
+    
+    """ saving season inputted by user to pickle """
+    with open("season.txt","wb") as seas:
+        pickle.dump(season,seas)
+    
+    
+    return dateslist,teamslist,df2,df3,avgpointslist,ppgstring
+
+            
+        
+dateslist,teamslist,df2,df3,avgpointslist,ppgstring = pullgamelog('MIA','2016')
+
+df2.to_pickle("C:\Users\sharris\Documents\Python Scripts\gamedf.pkl")
 ```
