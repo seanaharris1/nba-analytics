@@ -6,7 +6,7 @@ This project will investigate (and hopefully validate) the myth of the "South Be
 
 I will be using pandas, BeautifulSoup, numpy, and matplotlib libraries to pull and analyze statistics of NBA teams and players using data from the basketball-reference.com. I will be adding several different scripts doing different types of data analytics and will be glad to take any suggestions on what kind of analysis to perform.
 
-### Required Libraries
+## Required Libraries
 ```python
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -20,7 +20,7 @@ import pickle
 The code in this depository is written in Python 2.7 but all of the required libraries will work with Python 3 as well. If you are using an IDE like Anaconda, you will have most of the required libraries except for Beautiful Soup 4. Beautiful Soup 4 can be install with ``` pip install bs4 ```
 
 
-### Pull Game Log
+## Pull Game Log
 The pullgamelog.py file uses the BeautifulSoup and Pandas libraries to pull the gamelogs of a team (in this case, the Miami Heat) and fit them to a dataframe. It takes the 3 character abbeviation of any NBA team entered by the user and the 4 digit number for the year (*i.e., '2016' will result in the 2015-2016 season.*) and pulls the game log. 
 ```python
     url = 'http://www.basketball-reference.com/teams/'+team+'/'+season+'/gamelog'
@@ -30,6 +30,7 @@ The pullgamelog.py file uses the BeautifulSoup and Pandas libraries to pull the 
 
 *Note: The season to be pulled can be easily changed by editing the variable 'url' to the year that is desired.*
 
+### Pulling Team Name and Average Points Per Game 
 We start by pulling the full team name. The full name is stored in the only "h1" tag in the body of the webpage.
 
 ```python
@@ -80,7 +81,7 @@ After, I remove the whitespaces and append the home average points per game, opp
     avgpointslist.append(awayppgavg)
     avgpointslist.append(teamname)
 ```
-
+### Pulling the gamelog
 Pulling out the gamelog with BeautifulSoup requires some inspecting of the gamelog webpage. If you are using Google Chrome, Ctrl+Shift+I or F12 will open the developer's tab. The developer's tab is a useful tool when doing any web scraping with BeautifulSoup. It will highlight the webpage element as you hover over it.
 
 ![basketball-reference gamelog table](https://user-images.githubusercontent.com/24396902/29322699-6106e726-81ac-11e7-800b-82bf0f1c67ff.png)
@@ -168,9 +169,7 @@ Save the points per game list and season variable to pickles to be opened up in 
     
     
     return dateslist,teamslist,df2,df3,avgpointslist,ppgstring
-
-            
-        
+       
 dateslist,teamslist,df2,df3,avgpointslist,ppgstring = pullgamelog('MIA','2016')
 
 df2.to_pickle("C:\Users\sharris\Documents\Python Scripts\gamedf.pkl")
