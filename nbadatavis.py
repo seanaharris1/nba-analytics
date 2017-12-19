@@ -105,7 +105,7 @@ awayteamtovavguse = awayteam_usabledf['TOVopp'].mean()
 awayteampfavgbtb = awayteam_backtobackdf['PFopp'].mean()
 awayteampfavguse = awayteam_usabledf['PFopp'].mean()
 awayteamptavgbtb = awayteam_backtobackdf['opponent points'].mean()
-awayteampfavguse = awayteam_usabledf['opponent points'].mean()
+awayteamptavguse = awayteam_usabledf['opponent points'].mean()
 
 #%% Creating Graphs
 
@@ -232,5 +232,56 @@ plt.tight_layout()
 plt.show()
 
 """ bar graph for points scored vs avg points per game """
+n_groups = 3
+awaypoints = (awayteamptavgbtb,awayteamptavguse,avgawaypoints)
+homepoints = (hometeamptavgbtb,hometeamptavguse,avghomepoints)
+fig, ac = plt.subplots()
 
+index = np.arange(n_groups)
 
+barwidth = 0.15
+opacity = 0.6
+
+bar_1 = plt.bar(index, awaypoints, bar_width,
+                alpha = opacity,
+                color = 'y',
+                label = 'Away Team PPG')
+
+bar_2 = plt.bar(index + bar_width, homepoints, bar_width,
+                alpha = opacity,
+                color = 'r',
+                label = teamname + ' PPG')
+
+plt.ylabel('Points Per Game', fontname = 'Arial', fontsize = 14)
+
+plt.title(teamname + ' Home Games', fontname = 'Arial',
+          fontsize = 20,
+          loc = 'center')
+
+plt.xticks(index + bar_width, ('back-to-back PPG',
+                               'non back-to-back PPG',
+                               'Season Average PPG'),
+                               fontsize = 11,
+                               fontname = 'Arial')
+leg = plt.legend(bbox_to_anchor=(1,0.9), loc='center left', ncol=1,
+                 fontsize = 14,frameon=True)
+  
+leg.get_frame().set_edgecolor('k')
+plt.grid(False)
+plt.tight_layout()
+plt.show()
+
+""" scatter plots """
+xdata = range(0,len(awayteam_usabledf['opponent points']),1)
+plt.axhline(y=avgawaypoints, color = 'k')
+plt.plot(range(0,len(awayteam_backtobackdf['opponent points']),1),
+         awayteam_backtobackdf['opponent points'],'o',color = 'g')
+plt.show()
+plt.axhline(y = avgawaypoints, color = 'k')
+plt.plot(xdata,awayteam_usabledf['opponent points'],'o',color = 'r')
+plt.show()
+count = 0
+for x in awayteam_usabledf['opponent points']:
+    if x < avgawaypoints:
+        count = count + 1
+print count 

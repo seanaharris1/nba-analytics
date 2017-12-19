@@ -25,17 +25,16 @@ def pullgamelog(team,season):
     
     """ team name is 2nd element in the returned list """
     teamname = teamname[1]
-    
+
     """ stripping first character from the string """
     teamname = teamname[1:]
-    
+
     """ getting team and opponent avg points per game """
     ppgstring = soup.select("body > div > div:nth-of-type(2) > div > div > p:nth-of-type(5)")
     ppgstring = str(ppgstring)
     
     """ home team avg ppg """
     if "(" in ppgstring[38:44]:
-        print 'yes'        
         homeppgavg = ppgstring[38:42]      
     elif "(" in ppgstring[38:45]:
         homeppgavg = ppgstring[38:43]

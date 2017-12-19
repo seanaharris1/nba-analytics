@@ -3,6 +3,7 @@ import datetime as dt
 from urllib2 import urlopen
 import csv
 import pickle
+import re
 
 """ 
 NOTES 
@@ -14,6 +15,7 @@ include 'a' type elements, which contain the date of each game in the gamelog.
 - SAH 07/12/2017 
 
 """
+
 """ loading pickle that contains team and season that was passed to gamelog 
 file so we can pass it to the url variable in the teamdate function """
 with open("season.txt","rb") as seas:
@@ -84,6 +86,7 @@ def backtoback(*pair):
     
 def avgpointsonroad(*teamlist):
     avgpointslist = []
+    avgfg = []
     for team in teamlist:
         
         """ I print the current team variable so I can see the function
@@ -106,6 +109,18 @@ def avgpointsonroad(*teamlist):
             avgpoints = avg_points_on_road[35:40]
         avgpointslist.append(avgpoints)
         
+        """ pulling avg field goals made and attempted on the road """
+        avg_fg_made = str(soup.find('body').find('div',id='all_team_splits').\
+        findAll('td')[4])
+        avg_fg_att = str(soup.find('body').find('div', id='all_team_splits').\
+        findAll('td')[5])
+        
+        
+        avg_fg_made_int = float(filter(str.isdigit,avg_fg_made))
+        avg_fg_att_int = float(filter(str.isdigit,avg_fg_att))
+        avg_fg_tuple = (avg_fg_made_int,avg_fg_att_int)
+        avgfg.append(avg_fg_tuple)
+        str
     return avgpointslist
 
 """ creating empty lists """
