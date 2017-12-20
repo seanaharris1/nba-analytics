@@ -105,7 +105,7 @@ awayteamtovavguse = awayteam_usabledf['TOVopp'].mean()
 awayteampfavgbtb = awayteam_backtobackdf['PFopp'].mean()
 awayteampfavguse = awayteam_usabledf['PFopp'].mean()
 awayteamptavgbtb = awayteam_backtobackdf['opponent points'].mean()
-awayteampfavguse = awayteam_usabledf['opponent points'].mean()
+awayteamptavguse = awayteam_usabledf['opponent points'].mean()
 
 #%% Creating Graphs
 
@@ -149,6 +149,33 @@ leg = plt.legend(bbox_to_anchor=(1,0.9), loc='center left', ncol=1,fontsize = 14
 """ making the frame black """
 leg.get_frame().set_edgecolor('k')
 
+""" adding label to bars """
+def autolabel(rects, ac):
+    # Get y-axis height to calculate label position from.
+    (y_bottom, y_top) = ac.get_ylim()
+    y_height = y_top - y_bottom
+
+    for rect in rects:
+        height = rect.get_height()
+
+        # Fraction of axis height taken up by this rectangle
+        p_height = (height / y_height)
+
+        # If we can fit the label above the column, do that;
+        # otherwise, put it inside the column.
+        if p_height > 0.95: # arbitrary; 95% looked good to me.
+            label_position = height - (y_height * 0.05)
+        else:
+            label_position = height + (y_height * 0.01)
+
+        ac.text(rect.get_x() + rect.get_width()/2., label_position,
+                float(round(height,1)),
+                ha='center', va='bottom')
+
+autolabel(rects1, ac)
+autolabel(rects2, ac)
+
+
 """ removing gridlines """
 plt.grid(False)
 plt.tight_layout()
@@ -188,6 +215,32 @@ plt.xticks(index + bar_width, ('Away team turnovers/game',
 leg = plt.legend(bbox_to_anchor=(1,0.9), loc='center left', ncol=1,
                  fontsize = 14, frameon=True)
 leg.get_frame().set_edgecolor('k')
+
+def autolabel(rects, ac):
+    # Get y-axis height to calculate label position from.
+    (y_bottom, y_top) = ac.get_ylim()
+    y_height = y_top - y_bottom
+
+    for rect in rects:
+        height = rect.get_height()
+
+        # Fraction of axis height taken up by this rectangle
+        p_height = (height / y_height)
+
+        # If we can fit the label above the column, do that;
+        # otherwise, put it inside the column.
+        if p_height > 0.95: # arbitrary; 95% looked good to me.
+            label_position = height - (y_height * 0.05)
+        else:
+            label_position = height + (y_height * 0.01)
+
+        ac.text(rect.get_x() + rect.get_width()/2., label_position,
+                float(round(height,1)),
+                ha='center', va='bottom')
+
+autolabel(bar1, ac)
+autolabel(bar2, ac)
+
 plt.grid(False)
 plt.tight_layout()
 plt.show()
@@ -227,10 +280,103 @@ plt.xticks(index + bar_width, ('Away team fouls/game',
 leg = plt.legend(bbox_to_anchor=(1,0.9), loc='center left', ncol=1,
                  fontsize = 14, frameon=True)
 leg.get_frame().set_edgecolor('k')
+
+def autolabel(rects, ac):
+    # Get y-axis height to calculate label position from.
+    (y_bottom, y_top) = ac.get_ylim()
+    y_height = y_top - y_bottom
+
+    for rect in rects:
+        height = rect.get_height()
+
+        # Fraction of axis height taken up by this rectangle
+        p_height = (height / y_height)
+
+        # If we can fit the label above the column, do that;
+        # otherwise, put it inside the column.
+        if p_height > 0.95: # arbitrary; 95% looked good to me.
+            label_position = height - (y_height * 0.05)
+        else:
+            label_position = height + (y_height * 0.01)
+
+        ac.text(rect.get_x() + rect.get_width()/2., label_position,
+                float(round(height,1)),
+                ha='center', va='bottom')
+
+autolabel(bar_1, ac)
+autolabel(bar_2, ac)
+
 plt.grid(False)
 plt.tight_layout()
 plt.show()
 
 """ bar graph for points scored vs avg points per game """
+n_groups = 3
+awaypoints = (awayteamptavgbtb,awayteamptavguse,avgawaypoints)
+homepoints = (hometeamptavgbtb,hometeamptavguse,avghomepoints)
+fig,ac = plt.subplots()
+
+index = np.arange(n_groups)
+
+barwidth = 0.20
+opacity = 0.6
+
+bar_1 = plt.bar(index, awaypoints, bar_width,
+                alpha = opacity,
+                color = 'y',
+                label = 'Away Team Points Per Game')
+
+bar_2 = plt.bar(index + bar_width, homepoints, bar_width,
+                alpha = opacity,
+                color = 'r',
+                label = teamname + ' Points Per Game')
+
+plt.ylabel('Points Per Game', fontname = 'Arial', fontsize = 14)
+
+plt.title(teamname + ' Home Games', fontname = 'Arial',
+          fontsize = 20,
+          loc = 'center')
+          
+plt.xticks(index + bar_width, ('back-to-back PPG',
+                               'non back-to-back PPG',
+                               'total PPG'),
+                               fontsize = 12,
+                               fontname = 'Arial')
+                               
+leg = plt.legend(bbox_to_anchor=(1,0.9), loc = 'center left', ncol=1,
+                 fontsize = 14, frameon=True)
+leg.get_frame().set_edgecolor('k')
+
+""" adding labels to bars, credit to Composition Al """
+def autolabel(rects, ac):
+    # Get y-axis height to calculate label position from.
+    (y_bottom, y_top) = ac.get_ylim()
+    y_height = y_top - y_bottom
+
+    for rect in rects:
+        height = rect.get_height()
+
+        # Fraction of axis height taken up by this rectangle
+        p_height = (height / y_height)
+
+        # If we can fit the label above the column, do that;
+        # otherwise, put it inside the column.
+        if p_height > 0.95: # arbitrary; 95% looked good to me.
+            label_position = height - (y_height * 0.05)
+        else:
+            label_position = height + (y_height * 0.01)
+
+        ac.text(rect.get_x() + rect.get_width()/2., label_position,
+                float(round(height,1)),
+                ha='center', va='bottom')
+
+autolabel(bar_1, ac)
+autolabel(bar_2, ac)
+
+plt.grid(False)
+plt.tight_layout()
+plt.show()
+
+                
 
 

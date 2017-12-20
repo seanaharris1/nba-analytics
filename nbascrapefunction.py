@@ -3,6 +3,7 @@ import datetime as dt
 from urllib2 import urlopen
 import csv
 import pickle
+import re
 
 """ 
 NOTES 
@@ -105,6 +106,20 @@ def avgpointsonroad(*teamlist):
         elif '<' not in avg_points_on_road[35:40]:
             avgpoints = avg_points_on_road[35:40]
         avgpointslist.append(avgpoints)
+
+#        saturday_games_ppg = soup.find('body').\
+#        find('div',id='all_team_splits').find('table').findAll('tr')[27].\
+#        findAll('td')[17]
+#        
+#        saturday_games_ppg = str(saturday_games_ppg)
+#        print saturday_games_ppg
+#        saturday_games_ppg = re.findall(r"[-+]?\d*\.\d+|\d+",saturday_games_ppg)
+#
+#        saturday_games_ppg = saturday_games_ppg[0]
+#        saturday_games_ppg = float(saturday_games_ppg)        
+#        avgpoints = float(avgpoints)
+#        satvsavg = avgpoints - saturday_games_ppg
+#        print satvsavg
         
     return avgpointslist
 
@@ -127,7 +142,7 @@ teams_list = [''.join(x) for x in teams_list]
 pair = zip(teams_list,dates_list)
 
 
-usablegameslist,backtobacklist,new,previous = backtoback(*pair)
+#usablegameslist,backtobacklist,new,previous = backtoback(*pair)
 avgpointslist = avgpointsonroad(*teams_list)
 
 """ writing usablegameslist and backtobacklist to text files """
