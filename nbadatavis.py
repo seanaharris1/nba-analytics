@@ -36,7 +36,6 @@ avgpointslist = [''.join(x) for x in avgpointslist]
 """ loading home and away points per game, and teamname pickle """
 with open("pointslist.txt","rb") as pl:
     avgppg = pickle.load(pl)
-avghomepoints = float(avgppg[0])
 avgawaypoints = float(avgppg[1])
 teamname = avgppg[2]
 
@@ -44,6 +43,7 @@ teamname = avgppg[2]
 gamelogdf['avg_road_points'] = pd.Series(avgpointslist, index=gamelogdf.index)
 gamelogdf = gamelogdf.apply(pd.to_numeric, errors='ignore')
 roadpointsmean = gamelogdf['avg_road_points'].mean()
+avghomepoints = gamelogdf['Tm'].mean()
 
 #%% Home team Dataframes
 """ hometeam_usabledf is the dataframe of the home team stats when facing a team
@@ -377,6 +377,59 @@ plt.grid(False)
 plt.tight_layout()
 plt.show()
 
-                
+""" counting the number of wins for back to back and non back to back games """
+countwinusable = 0
+for x in hometeam_usabledf['W/L']:
+    if x == 'W':
+        countwinusable = countwinusable + 1
+
+""" calculating win percentage """
+usablewinperc = float(countwinusable) / len(hometeam_usabledf['W/L'])
+
+countwinbacktoback = 0
+for x in hometeam_backtobackdf['W/L']:
+    if x == 'W':
+        countwinbacktoback = countwinbacktoback + 1
+backtobackwinperc = float(countwinbacktoback) / len(hometeam_backtobackdf['W/L'])
+
+""" creating bar graph for win percentage """
+n_groups = 1
+homeusable = usablewinperc*100
+homebtb = backtobackwinperc*100
+fig, ac = plt.subplots()
+
+index = np.arange(n_groups)
+
+barwidth = 0.25
+opacity = 0.5
+
+bar_1 = plt.bar(index, homeusable, barwidth,
+                alpha = opacity,
+                color = 'g',
+                label = 'Win % in non back-to-back games')
+bar_2 = plt.bar(index + barwidth, homebtb, barwidth,
+                alpha = opacity,
+                color = 'r',
+                label = 'Win % in back-to-back games')
+
+plt.ylabel('Winning Percentage', fontname = 'Arial', fontsize = '14')
+
+plt.title(teamname + ' Home Games Winning Percentage', fontname = 'Arial',
+          fontsize = 20,
+          loc = 'center')
+
+plt.xticks(index + bar_width, (''),
+                               fontsize = 12,
+                               fontname = 'Arial')
 
 
+leg = plt.legend(bbox_to_anchor=(0,-0.15), loc = 'center left', ncol=1,
+                 fontsize = 14, frameon=True)
+leg.get_frame().set_edgecolor('k')
+
+autolabel(bar_1, ac)
+autolabel(bar_2, ac)
+
+plt.grid(False)
+plt.tight_layout()
+plt.show()
