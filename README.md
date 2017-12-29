@@ -208,7 +208,7 @@ The backtoback takes a pair of lists and passes 1 element (team and season) of e
 
 ```python
 
-    def backtoback(*pair):
+   def backtoback(*pair):
         list(teams_list)
         list(dates_list)
         teamdate = zip(teams_list,dates_list)
