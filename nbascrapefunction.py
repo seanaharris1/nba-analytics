@@ -15,6 +15,25 @@ include 'a' type elements, which contain the date of each game in the gamelog.
 - SAH 07/12/2017 
 
 """
+
+""" creating empty lists """
+dates_list = []
+teams_list = []
+
+""" calling the text files created in nbascraper file """
+with open("dates_list_text.txt","r") as dateslist:
+    for date in csv.reader(dateslist):
+        dates_list.append(date)
+dates_list = [''.join(x) for x in dates_list]
+
+with open("teams_list_text.txt","r") as teamslist:
+    for team in csv.reader(teamslist):
+        teams_list.append(team)
+teams_list = [''.join(x) for x in teams_list]
+
+""" zipping the 2 lists so it can be passed to the backtoback function """
+pair = zip(teams_list,dates_list)
+
 """ loading pickle that contains team and season that was passed to gamelog 
 file so we can pass it to the url variable in the teamdate function """
 with open("season.txt","rb") as seas:
@@ -24,7 +43,6 @@ def backtoback(*pair):
     list(teams_list)
     list(dates_list)
     teamdate = zip(teams_list,dates_list)
-    print type(teams_list)
     
     """ creating empty list for the usable games """
     usablegameslist = []
@@ -93,7 +111,7 @@ def avgpointsonroad(*teamlist):
         
         """ url and soup for team splits webpage to get average points on the
         road for team """
-        url = 'http://www.basketball-reference.com/teams/'+team+'/2016/splits'
+        url = 'http://www.basketball-reference.com/teams/'+team+'/'+season+'/splits'
         html = urlopen(url)
         soup = BeautifulSoup(html,"html.parser")
         
@@ -123,26 +141,7 @@ def avgpointsonroad(*teamlist):
         
     return avgpointslist
 
-""" creating empty lists """
-dates_list = []
-teams_list = []
-
-""" calling the text files created in nbascraper file """
-with open("dates_list_text.txt","r") as dateslist:
-    for date in csv.reader(dateslist):
-        dates_list.append(date)
-dates_list = [''.join(x) for x in dates_list]
-
-with open("teams_list_text.txt","r") as teamslist:
-    for team in csv.reader(teamslist):
-        teams_list.append(team)
-teams_list = [''.join(x) for x in teams_list]
-
-""" zipping the 2 lists so it can be passed to the backtoback function """
-pair = zip(teams_list,dates_list)
-
-
-#usablegameslist,backtobacklist,new,previous = backtoback(*pair)
+usablegameslist,backtobacklist,new,previous = backtoback(*pair)
 avgpointslist = avgpointsonroad(*teams_list)
 
 """ writing usablegameslist and backtobacklist to text files """
