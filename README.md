@@ -205,9 +205,7 @@ To sort the games I use the **backtoback** function in the **nbascrapefunction.p
 ```
 
 The backtoback takes a pair of lists and passes 1 element (team and season) of each list to a for loop. The elements are passed to the basketball reference URL string. The dates of the game are stored in the hyperlink (in an *a* tag) of each data row. The dates are then checked to see if the team passed from the *team* variable most recent game is the day before using the **datetime** library. The dates are then sorted into the *usablegameslist* and *backtobacklist* lists. Usable games are those where the road team did not play the day before. Back to back games are those where the road team played the day before.
-
 ```python
-
    def backtoback(*pair):
         list(teams_list)
         list(dates_list)
