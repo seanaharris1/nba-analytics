@@ -20,6 +20,8 @@ import pickle
 The code in this depository is written in Python 2.7 but all of the required libraries will work with Python 3 as well. If you are using an IDE like Anaconda, you will have most of the required libraries except for Beautiful Soup 4. Beautiful Soup 4 can be install with ``` pip install bs4 ```
 
 
+# Walkthrough
+
 ## Pull Game Log
 The pullgamelog.py file uses the BeautifulSoup and Pandas libraries to pull the gamelogs of a team (in this case, the Miami Heat) and fit them to a dataframe. It takes the 3 character abbeviation of any NBA team entered by the user and the 4 digit number for the year (*i.e., '2016' will result in the 2015-2016 season.*) and pulls the game log. 
 ```python
