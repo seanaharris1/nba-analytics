@@ -207,64 +207,63 @@ To sort the games I use the **backtoback** function in the **nbascrapefunction.p
 The backtoback takes a pair of lists and passes 1 element (team and season) of each list to a for loop. The elements are passed to the basketball reference URL string. The dates of the game are stored in the hyperlink (in an *a* tag) of each data row. The dates are then checked to see if the team passed from the *team* variable most recent game is the day before using the **datetime** library. The dates are then sorted into the *usablegameslist* and *backtobacklist* lists. Usable games are those where the road team did not play the day before. Back to back games are those where the road team played the day before.
 
 ```python
+    def backtoback(*pair):
+        list(teams_list)
+        list(dates_list)
+        teamdate = zip(teams_list,dates_list)
 
-def backtoback(*pair):
-    list(teams_list)
-    list(dates_list)
-    teamdate = zip(teams_list,dates_list)
-
-    """ creating empty list for the usable games """
-    usablegameslist = []
-    backtobacklist = []
-
-
-    for team,date in teamdate:
-        print team
-        """ feed 'team' value from function input """
-        url = 'http://www.basketball-reference.com/teams/'+team+'/'+season+'/gamelog'
-        html = urlopen(url)
-        soup = BeautifulSoup(html,"html.parser")
+        """ creating empty list for the usable games """
+        usablegameslist = []
+        backtobacklist = []
 
 
-        """ data_rows is beautifulsoup element of all the 'a' type elements
-        from the dataset soup which contains the date"""
-        data_rows = soup.findAll('tbody')[0].findAll('a')
+        for team,date in teamdate:
+            print team
+            """ feed 'team' value from function input """
+            url = 'http://www.basketball-reference.com/teams/'+team+'/'+season+'/gamelog'
+            html = urlopen(url)
+            soup = BeautifulSoup(html,"html.parser")
 
-        """ 'a' elements also includes another row from each game that needs 
-        to be removed. All of the unneed rows are odd in the list index which
-        can be removed by using a slice """
-        del data_rows[1::2]
-        list(data_rows)
 
-        """ turning beautifulsoup elements into strings """
+            """ data_rows is beautifulsoup element of all the 'a' type elements
+            from the dataset soup which contains the date"""
+            data_rows = soup.findAll('tbody')[0].findAll('a')
 
-        opp_dates_list = [link.string for link in data_rows]
-        opp_dates_list = [str(p) for p in opp_dates_list]
+            """ 'a' elements also includes another row from each game that needs 
+            to be removed. All of the unneed rows are odd in the list index which
+            can be removed by using a slice """
+            del data_rows[1::2]
+            list(data_rows)
 
-        """ forloop to iterate over data_rows, find the date value of the game 
-        and return it as a string, where x is the index of the datarows """
-        for x in range(len(opp_dates_list)):
+            """ turning beautifulsoup elements into strings """
 
-            """ individual data_row where index is x """
-            new_date = opp_dates_list[x]
-            previous_date = opp_dates_list[x-1]
+            opp_dates_list = [link.string for link in data_rows]
+            opp_dates_list = [str(p) for p in opp_dates_list]
 
-            """ checking if given date is equal to the date in the datarow 
-            we are currently examing """
-            if date in new_date:
+            """ forloop to iterate over data_rows, find the date value of the game 
+            and return it as a string, where x is the index of the datarows """
+            for x in range(len(opp_dates_list)):
 
-                """ converting date values to datetime value """
-                dateconvert = dt.datetime.strptime(new_date,'%Y-%m-%d').date()
-                print dateconvert
-                previous_dateconvert = dt.datetime.strptime(previous_date,'%Y-%m-%d').date()
-                print previous_dateconvert
+                """ individual data_row where index is x """
+                new_date = opp_dates_list[x]
+                previous_date = opp_dates_list[x-1]
 
-                """ checking if the diff between the 2 dates is 1, if not
-                then the date is usable """
-                if dateconvert - previous_dateconvert != dt.timedelta(1):
-                    usablegameslist.append(new_date)
+                """ checking if given date is equal to the date in the datarow 
+                we are currently examing """
+                if date in new_date:
+
+                    """ converting date values to datetime value """
+                    dateconvert = dt.datetime.strptime(new_date,'%Y-%m-%d').date()
+                    print dateconvert
+                    previous_dateconvert = dt.datetime.strptime(previous_date,'%Y-%m-%d').date()
+                    print previous_dateconvert
+
+                    """ checking if the diff between the 2 dates is 1, if not
+                    then the date is usable """
+                    if dateconvert - previous_dateconvert != dt.timedelta(1):
+                        usablegameslist.append(new_date)
+                    else:
+                        backtobacklist.append(new_date)
                 else:
-                    backtobacklist.append(new_date)
-            else:
-                None
+                    None
 ```
