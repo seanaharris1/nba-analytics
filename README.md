@@ -1,4 +1,4 @@
-# nbascraper
+# NBA Data Analytics
 Data scraping and analysis on NBA teams via data from [basketball-reference.com](https://www.basketball-reference.com/). 
 
 # Introduction
@@ -174,7 +174,7 @@ Save the points per game list and season variable to pickles to be opened up in 
        
 dateslist,teamslist,df2,df3,avgpointslist,ppgstring = pullgamelog('MIA','2016')
 
-df2.to_pickle("C:\Users\sharris\Documents\Python Scripts\gamedf.pkl")
+df2.to_pickle("C:\Users\******\Documents\Python Scripts\gamedf.pkl")
 ```
 
 ## Sorting the Games 
@@ -269,3 +269,71 @@ def backtoback(*pair):
             else:
                 None
 ```
+I do the same and pull the average points scored on the road for each team passed from the *teamslist* list. 
+
+```python
+def avgpointsonroad(*teamlist):
+    avgpointslist = []
+    for team in teamlist:
+                
+        """ url and soup for team splits webpage to get average points on the
+        road for team """
+        url = 'http://www.basketball-reference.com/teams/'+team+'/'+season+'/splits'
+        html = urlopen(url)
+        soup = BeautifulSoup(html,"html.parser")
+        
+        """ pulling the avg points on the road for teams """
+        avg_points_on_road = soup.findAll('tr')[5].findAll('td')[17]
+        avg_points_on_road = str(avg_points_on_road)
+        
+        if '<' in avg_points_on_road[35:40]:
+            avgpoints = avg_points_on_road[35:39]
+        elif '<' not in avg_points_on_road[35:40]:
+            avgpoints = avg_points_on_road[35:40]
+        avgpointslist.append(avgpoints)
+        
+        avgpointslist = "\n".join(p for p in avgpointslist)
+        avgpointslistfile = open("avgpointslist.txt","w")
+        avgpointslistfile.write(avgpointslist)
+        avgpointslistfile.close()
+```
+Now that all the data has been pulled from basketball-reference, I can move on to visually illustrating it.
+
+## Data Visualization
+
+To visually represent the data, I will use the **matplotlib** library. In the **nbadatavis.py** file, I load the required libraries, the *gamelog* dataframe, the lists created in the *nbascraper.py* file, and the average home and opponent score.
+
+```python
+import pandas as pd
+import csv
+import matplotlib.pyplot as plt
+import numpy as np
+import pickle
+
+""" opening pickle of dataframe from nbascraper file """
+gamelogdf = pd.read_pickle("C:\Users\******\Documents\Python Scripts\gamedf.pkl")
+
+""" creating empty lists and writing the usable games and back to back text 
+files to the lists """
+usablegameslist = []
+backtobacklist = []
+avgpointslist = [] 
+
+
+
+with open("usable_games_file.txt","r") as usablegames:
+    for game in csv.reader(usablegames):
+        usablegameslist.append(game)
+usablegameslist = [''.join(x) for x in usablegameslist]
+
+with open("back_to_back.txt","r") as backtoback:
+    for game in csv.reader(backtoback):
+        backtobacklist.append(game)
+backtobacklist = [''.join(x) for x in backtobacklist]
+
+with open("avgpointslist.txt","r") as avgpoints:
+    for game in csv.reader(avgpoints):
+        avgpointslist.append(game)
+avgpointslist = [''.join(x) for x in avgpointslist]
+```
+
