@@ -384,7 +384,7 @@ hometeamptavguse = hometeam_usabledf['Tm'].mean()
 
 ### Graphing the data
 
-To represent the data I use simple bar graphs, created with the **matplotlib** library. To accurately display the values of the data, I label the individual bars with their numerical value. I got this solution from a blog post on Composition Al. The blog post along with a full explanation of the code can be found [here](http://composition.al/blog/2015/11/29/a-better-way-to-add-labels-to-bar-charts-with-matplotlib/). The **autolabel** function only has to be included once and call 
+To represent the data I use simple bar graphs, created with the **matplotlib** library. To accurately display the values of the data, I label the individual bars with their numerical value. I got this solution from a blog post on Composition Al. The blog post along with a full explanation of the code can be found [here](http://composition.al/blog/2015/11/29/a-better-way-to-add-labels-to-bar-charts-with-matplotlib/). The **autolabel** function only has to be included once at the beginning.
 
 ```python
 """ bar graph for points scored vs avg points per game """
