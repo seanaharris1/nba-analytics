@@ -336,4 +336,125 @@ with open("avgpointslist.txt","r") as avgpoints:
         avgpointslist.append(game)
 avgpointslist = [''.join(x) for x in avgpointslist]
 ```
+### Sorting the data 
+
+After adding the average points of each team as a column in the *gamelog* dataframe, I convert any number strings into floats and get the average points scored at home by Miami and the average points scored by the road teams when playing @ Miami. 
+
+4 new dataframes are created from the *gamelog* dataframe using the *usablegameslist* and *backtobacklist* to sort between the home team and away team back-to-back and non back-to-back statistics. I only use a few stats but any stat in the gamelog could be used (*I'll only show the hometeam dataframes being created. The away team is the same process with the corresponding columns*). I use the average values of the selected stats to be represented by a bar graph. 
+```python
+""" adding the avg points on the road for each team in the gamelog df """
+gamelogdf['avg_road_points'] = pd.Series(avgpointslist, index=gamelogdf.index)
+gamelogdf = gamelogdf.apply(pd.to_numeric, errors='ignore')
+roadpointsmean = gamelogdf['avg_road_points'].mean()
+avghomepoints = gamelogdf['Tm'].mean()
+
+#%% Home team Dataframes
+""" hometeam_usabledf is the dataframe of the home team stats when facing a team
+that has not played the night before (not on the 2nd night of back to back). 
+Only using a few home team stats """
+hometeam_usabledf = gamelogdf.loc[:,["Date","W/L","Tm","FG%","3P%","FT%","ORB",
+"TRB","TOV","PF"]]
+hometeam_usabledf = gamelogdf[gamelogdf['Date'].isin(usablegameslist)]
+
+""" resetting the index """
+hometeam_usabledf = hometeam_usabledf.reset_index(drop=True)
+
+""" converting columns with number stats to float type """
+hometeam_usabledf = hometeam_usabledf.apply(pd.to_numeric, errors='ignore')
+
+""" doing the same for back to back games """
+hometeam_backtobackdf = gamelogdf.loc[:,["Date","W/L","Tm","FG%","3P%","FT%","ORB",
+"TRB","TOV","PF"]]
+hometeam_backtobackdf = hometeam_backtobackdf[hometeam_backtobackdf['Date'].isin(backtobacklist)]
+hometeam_backtobackdf = hometeam_backtobackdf.reset_index(drop=True)
+hometeam_backtobackdf = hometeam_backtobackdf.apply(pd.to_numeric, errors='ignore')
+
+""" extracting home team values """
+hometeamfgavgbtb = hometeam_backtobackdf['FG%'].mean()
+hometeamfgavguse = hometeam_usabledf['FG%'].mean()
+hometeamtpavgbtb = hometeam_backtobackdf['3P%'].mean()
+hometeamtpavguse = hometeam_usabledf['3P%'].mean()
+hometeamtovavgbtb = hometeam_backtobackdf['TOV'].mean()
+hometeamtovavguse = hometeam_usabledf['TOV'].mean()
+hometeampfavgbtb = hometeam_backtobackdf['PF'].mean()
+hometeampfavguse = hometeam_usabledf['PF'].mean()
+hometeamptavgbtb = hometeam_backtobackdf['Tm'].mean()
+hometeamptavguse = hometeam_usabledf['Tm'].mean()
+```
+
+### Graphing the data
+
+To represent the data I use simple bar graphs, created with the **matplotlib** library. To accurately display the values of the data, I label the individual bars with their numerical value. I got this solution from a blog post on Composition Al. The blog post along with a full explanation of the code can be found [here](http://composition.al/blog/2015/11/29/a-better-way-to-add-labels-to-bar-charts-with-matplotlib/). The **autolabel** function only has to be included once and call 
+
+```python
+""" bar graph for points scored vs avg points per game """
+n_groups = 3
+awaypoints = (awayteamptavgbtb,awayteamptavguse,avgawaypoints)
+homepoints = (hometeamptavgbtb,hometeamptavguse,avghomepoints)
+fig,ac = plt.subplots()
+
+index = np.arange(n_groups)
+
+barwidth = 0.20
+opacity = 0.6
+
+bar_1 = plt.bar(index, awaypoints, bar_width,
+                alpha = opacity,
+                color = 'y',
+                label = 'Away Team Points Per Game')
+
+bar_2 = plt.bar(index + bar_width, homepoints, bar_width,
+                alpha = opacity,
+                color = 'r',
+                label = teamname + ' Points Per Game')
+
+plt.ylabel('Points Per Game', fontname = 'Arial', fontsize = 14)
+
+plt.title(teamname + ' Home Games', fontname = 'Arial',
+          fontsize = 20,
+          loc = 'center')
+          
+plt.xticks(index + bar_width, ('back-to-back PPG',
+                               'non back-to-back PPG',
+                               'total PPG'),
+                               fontsize = 12,
+                               fontname = 'Arial')
+                               
+leg = plt.legend(bbox_to_anchor=(0.07,-0.2), loc = 'center left', ncol=1,
+                 fontsize = 14, frameon=True)
+leg.get_frame().set_edgecolor('k')
+
+""" adding labels to bars, credit to Composition Al """
+def autolabel(rects, ac):
+    # Get y-axis height to calculate label position from.
+    (y_bottom, y_top) = ac.get_ylim()
+    y_height = y_top - y_bottom
+
+    for rect in rects:
+        height = rect.get_height()
+
+        # Fraction of axis height taken up by this rectangle
+        p_height = (height / y_height)
+
+        # If we can fit the label above the column, do that;
+        # otherwise, put it inside the column.
+        if p_height > 0.95: # arbitrary; 95% looked good to me.
+            label_position = height - (y_height * 0.05)
+        else:
+            label_position = height + (y_height * 0.01)
+
+        ac.text(rect.get_x() + rect.get_width()/2., label_position,
+                float(round(height,1)),
+                ha='center', va='bottom')
+
+autolabel(bar_1, ac)
+autolabel(bar_2, ac)
+
+plt.grid(False)
+plt.tight_layout()
+plt.show()
+```
+
+
+
 
