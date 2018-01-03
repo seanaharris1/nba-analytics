@@ -454,7 +454,9 @@ plt.grid(False)
 plt.tight_layout()
 plt.show()
 ```
+![points per game graph](https://user-images.githubusercontent.com/24396902/34539555-ec51e05e-f09e-11e7-9af2-7aeb553d73e2.png)
 
+The resulting graph will print to the console but it can be saved to your computer with the **matplotlib.pyplot.savefig()** function. This can be repeated for any of the counting stats that are in the gamelog. I'll be adding the slightly altered versions of the files that will take multiple seasons of a team and fit it to a dataframe, but I won't cover that in the readme. 
 
 
 
