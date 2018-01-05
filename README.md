@@ -1,7 +1,6 @@
 # NBA Data Analytics
 Data scraping and analysis on NBA teams via data from [basketball-reference.com](https://www.basketball-reference.com/). 
 
-# Introduction
 This project will investigate (and hopefully validate) the myth of the "South Beach Flu", wherein opposing NBA teams, when visiting Miami (if they did not play the night before) will perform worse because they enjoyed a night on South Beach the night before (hence the name "South Beach Flu"). 
 
 I will be using pandas, BeautifulSoup, numpy, and matplotlib libraries to pull and analyze statistics of NBA teams and players using data from the basketball-reference.com. I will be adding several different scripts doing different types of data analytics and will be glad to take any suggestions on what kind of analysis to perform.
@@ -19,6 +18,25 @@ import pickle
 ```
 The code in this depository is written in Python 2.7 but all of the required libraries will work with Python 3 as well. If you are using an IDE like Anaconda, you will have most of the required libraries except for Beautiful Soup 4. Beautiful Soup 4 can be install with ``` pip install bs4 ```
 
+# Example
+Pass a *team* and a *season* variable to the **pullgamelog** function. Use the 3 letter team abbreviation for the *team* variable. MIA = Miam Heat, ATL = Atlanta Hawks, etc. Pass the 4 digit year for the *season* value. 2016 is the 2015-2016 season, 2015 is the 2014-2015 season, etc.
+
+```python
+dateslist,teamslist,df2,df3,avgpointslist = pullgamelog('MIA','2016')
+```
+**pullgamelog** will return the *dateslist* (list of home game dates in YYYY-MM-DD format), *teamslist* (list of teams played on those dates), *df2* (gamelog dataframe of home games of team passed in *season* variable), *df3* (dataframe of dates and opponents), and *avgpointslist* (home team average points scored, road team average points scored, and full team name string).
+
+Pass the *teamslist* and *dateslist* as a pair to the **backtoback** function. **backtoback** will return *usablesgameslist* (list of games played in which opponents did not play the day before) and *backtobacklist* (list of games played in which the opponent did play the night before).
+
+```python 
+pair = zip(teamslist,dateslist)
+usablegameslist,backtobacklist = backtoback(*pair)
+```
+
+Pass the *teamlist* to the **avgpointsonroad** function. It will return *avgpointslist* (list of the average points scored on the road by the teams in the *teamslist*).
+
+**nbadatavis.py** file will take the data from **pullgamelog**,**backtoback**, and **avgpointsonroad** functions and graph it.
+![Average Shooting Percentage](https://user-images.githubusercontent.com/24396902/34620689-4de38482-f214-11e7-9a14-ed538e3c147a.png)
 
 # Walkthrough
 
@@ -456,7 +474,6 @@ plt.show()
 ```
 ![points per game graph](https://user-images.githubusercontent.com/24396902/34539555-ec51e05e-f09e-11e7-9af2-7aeb553d73e2.png)
 
-The resulting graph will print to the console but it can be saved to your computer with the **matplotlib.pyplot.savefig()** function. This can be repeated for any of the counting stats that are in the gamelog. I'll be adding the slightly altered versions of the files that will take multiple seasons of a team and fit it to a dataframe, but I won't cover that in the readme. 
-
+The resulting graph will print to the console but it can be saved to your computer with the **matplotlib.pyplot.savefig()** function. This can be repeated for any of the counting stats that are in the gamelog. I'll be adding the slightly altered versions of the files that will take multiple seasons of a team and fit it to a dataframe, but that won't be covered in the readme (at this time).
 
 
