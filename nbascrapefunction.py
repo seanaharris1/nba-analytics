@@ -99,7 +99,7 @@ def backtoback(*pair):
             else:
                 None
         
-    return usablegameslist,backtobacklist,dateconvert,previous_dateconvert
+    return usablegameslist,backtobacklist
     
 def avgpointsonroad(*teamlist):
     avgpointslist = []
@@ -141,7 +141,7 @@ def avgpointsonroad(*teamlist):
         
     return avgpointslist
 
-usablegameslist,backtobacklist,new,previous = backtoback(*pair)
+usablegameslist,backtobacklist = backtoback(*pair)
 avgpointslist = avgpointsonroad(*teams_list)
 
 """ writing usablegameslist and backtobacklist to text files """

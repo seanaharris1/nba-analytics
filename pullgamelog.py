@@ -35,7 +35,6 @@ def pullgamelog(team,season):
     
     """ home team avg ppg """
     if "(" in ppgstring[38:44]:
-        print 'yes'        
         homeppgavg = ppgstring[38:42]      
     elif "(" in ppgstring[38:45]:
         homeppgavg = ppgstring[38:43]
@@ -123,11 +122,11 @@ def pullgamelog(team,season):
         pickle.dump(season,seas)
     
     
-    return dateslist,teamslist,df2,df3,avgpointslist,ppgstring
+    return dateslist,teamslist,df2,df3,avgpointslist
 
             
         
-dateslist,teamslist,df2,df3,avgpointslist,ppgstring = pullgamelog('MIA','2016')
+dateslist,teamslist,df2,df3,avgpointslist = pullgamelog('MIA','2016')
 
 df2.to_pickle("C:\Users\sharris\Documents\Python Scripts\gamedf.pkl")
 

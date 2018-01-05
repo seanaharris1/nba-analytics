@@ -51,7 +51,7 @@ that has not played the night before (not on the 2nd night of back to back).
 Only using a few home team stats """
 hometeam_usabledf = gamelogdf.loc[:,["Date","W/L","Tm","FG%","3P%","FT%","ORB",
 "TRB","TOV","PF"]]
-hometeam_usabledf = gamelogdf[gamelogdf['Date'].isin(usablegameslist)]
+hometeam_usabledf = hometeam_usabledf[hometeam_usabledf['Date'].isin(usablegameslist)]
 
 """ resetting the index """
 hometeam_usabledf = hometeam_usabledf.reset_index(drop=True)
@@ -81,7 +81,7 @@ hometeamptavguse = hometeam_usabledf['Tm'].mean()
 """ Away Team """
 awayteam_usabledf = gamelogdf.loc[:,["Date","opponent points","FGopp","FG%opp",
 "3P%opp","FT%opp","ORBopp","TRBopp","TOVopp","PFopp"]]
-awayteam_usabledf =gamelogdf[gamelogdf['Date'].isin(usablegameslist)]
+awayteam_usabledf = awayteam_usabledf[awayteam_usabledf['Date'].isin(usablegameslist)]
 
 """ resetting the index """
 awayteam_usabledf = awayteam_usabledf.reset_index(drop=True)
@@ -343,7 +343,7 @@ plt.xticks(index + bar_width, ('back-to-back PPG',
                                fontsize = 12,
                                fontname = 'Arial')
                                
-leg = plt.legend(bbox_to_anchor=(1,0.9), loc = 'center left', ncol=1,
+leg = plt.legend(bbox_to_anchor=(0.07,-0.20), loc = 'center left', ncol=1,
                  fontsize = 14, frameon=True)
 leg.get_frame().set_edgecolor('k')
 
@@ -432,4 +432,5 @@ autolabel(bar_2, ac)
 
 plt.grid(False)
 plt.tight_layout()
+plt.savefig('test.png',bbox_inches="tight")
 plt.show()
