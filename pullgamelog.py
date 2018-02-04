@@ -30,7 +30,7 @@ def pullgamelog(team,season):
     teamname = teamname[1:]
     
     """ getting team and opponent avg points per game """
-    ppgstring = soup.select("body > div > div:nth-of-type(2) > div > div > p:nth-of-type(5)")
+    ppgstring = soup.select("body > div > div:nth-of-type(2) > div > div > p:nth-of-type(4)")
     ppgstring = str(ppgstring)
     
     """ home team avg ppg """
