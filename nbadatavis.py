@@ -1,8 +1,6 @@
 import pandas as pd
 import csv
 import matplotlib.pyplot as plt
-import numpy as np
-import sympy as sp
 from matplotlib.font_manager import FontProperties
 import seaborn as sns
 import pickle
